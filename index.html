@@ -13,9 +13,27 @@
 <body>
   <div id="main">
     <div id="header">
-      <h1>Welcome to the pizza place</h1>
-      <h2>We're glad you're here</h2>
+      <img src="Image/pizzaGuy.jpg">
+      <h1>Poppa's Pizza</h1>
+      <h2>Serving our GRC students for over 50 years!</h2>
+      <hr>
+      <p> We make the best pizza ever. Visit us today.
+        <a id="contact-button" href="#" role="button"> Contact us</a>
     </div>
+    <form id="pizza-form" action="#" method="get">
+      <!-- Contact info -->
+       <fieldset>
+        <legend> Contact Info</legend>
+        <label for="fname"> First name: </label>
+        <input type="text" id="fname" name="fname">
+        <label for="lname"> Last name: </label>
+        <input type="text" id="lname" name="lname">
+        <label for="email"> Email: </label>
+        <input type="email" id="email" name="email"> 
+       </fieldset>
+       <button type="submit" id="order-button"> Place Order </button> 
+             
+    </form>
   </div>
 </body>
 </html>
