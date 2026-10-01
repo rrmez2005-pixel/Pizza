@@ -31,9 +31,59 @@
         <label for="email"> Email: </label>
         <input type="email" id="email" name="email"> 
        </fieldset>
-       <button type="submit" id="order-button"> Place Order </button> 
-             
-    </form>
+
+       <!-- Pickup or Delivery -->
+            <fieldset>
+                <legend>Select Pickup or Delivery</legend>
+                <label for="pickup">
+                    <input type="radio" id="pickup" name="method" value="pickup">
+                    Pickup
+                </label>
+                <label for="delivery">
+                    <input type="radio" id="delivery" name="method" value="delivery">
+                    Delivery
+                </label>
+            </fieldset>
+    
+      <fieldset>
+        <legend>Select toppings</legend>
+        <label for="pepperoni">
+          <input type="checkbox" id="pepperoni"
+                  name="toppings[]" value="pepperoni">
+                  Pepperoni
+        </label>
+        <label for="cheese">
+          <input type="checkbox" id="cheese"
+                  name="toppings[]" value="cheese">
+                  Cheese
+        </label>
+        <label for="Pineapple">
+          <input type="checkbox" id="Pineapple"
+                  name="toppings[]" value="Pineapple">
+                  Pineapple
+        </label>
+      </fieldset>
+
+      <!--Select pizza size-->
+      <fieldset>
+        <legend>Pizza Size</legend>
+        <select id="size" name="size">
+          <option value="none"> --Select a size-- </option>
+          <option value="small">small</option>
+          <option value="medium">medium</option>
+          <option value="large">large</option>
+        </select>
+       </fieldset>
+
+
+       <!--Comment field-->
+       <label for="--comment"> Comments</label>
+       <textarea rows="5" id="comment" name="comment"></textarea>
+
+         <button type="submit" id="order-button"> Place Order </button>        
+
+      </form>
   </div>
+
 </body>
 </html>
