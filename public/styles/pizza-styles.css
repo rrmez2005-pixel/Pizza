@@ -5,7 +5,7 @@
 body {
   background-color: darkred;
   margin: 0;
-
+  /* Kept your custom Times New Roman font */
   font-family: 'Times New Roman', Times, serif;
 }
 
@@ -45,6 +45,7 @@ body {
   font-size: 1rem;
 }
 
+/* Styles multiple input types together */
 input[type=text], input[type="email"], select, textarea {
   width: 100%;
   border: 1px solid darkgreen;
@@ -76,7 +77,11 @@ textarea {
   resize: none;
 }
 
+/* UPDATE: Added teacher's margins and font sizing for errors */
 .err {
   color: darkred;
-  display: none;
+  font-size: 0.85rem;
+  display: none; /* Hidden by default until JavaScript shows it */
+  margin-top: -0.75rem;
+  margin-bottom: 0.75rem;
 }

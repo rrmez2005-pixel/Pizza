@@ -1,97 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <!-- Favicon -->
-   <link rel="icon" href="Image/Pizza.jpg"> 
-   <link rel="stylesheet" href="styles/pizza-styles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The best pizza</title>
   
-  <!-- Javascript-->
-   <script src="scripts/pizza.js" defer></script>
+  <!-- Kept your custom Favicon path -->
+  <link rel="icon" href="Image/Pizza.jpg"> 
+  <link rel="stylesheet" href="styles/pizza-styles.css">
+  
+  <!-- Javascript: 'defer' ensures the script loads after the HTML -->
+  <script src="scripts/pizza.js" defer></script>
 </head>
 <body>
   <div id="main">
     <div id="header">
-      <img src="Image/pizzaGuy.jpg">
+      <!-- Kept your custom pizza guy image path -->
+      <img src="Image/pizzaGuy.jpg" alt="Pizza Guy">
       <h1>Poppa's Pizza</h1>
       <h2>Serving our GRC students for over 50 years!</h2>
       <hr>
-      <p> We make the best pizza ever. Visit us today.
-        <a id="contact-button" href="#" role="button"> Contact us</a>
+      <p>We make the best pizza ever. Visit us today.</p>
+      <!-- Ensure href matches the route in app.js -->
+      <a id="contact-button" href="/contact-us" role="button">Contact us</a>
     </div>
-    <form id="pizza-form" action="#" method="get">
-      <!-- Contact info -->
-       <fieldset>
-        <legend> Contact Info</legend>
-        <label for="fname"> First name: </label>
-        <input type="text" id="fname" name="fname">
 
+    <!-- UPDATE: Form action now points to our POST route on the server -->
+    <form id="pizza-form" action="/submit-order" method="post">
+      
+      <!-- Contact info -->
+      <fieldset>
+        <legend>Contact Info</legend>
+        
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname">
+        <!-- Error message span, hidden by default in CSS -->
         <span class="err" id="err-fname">First name is required</span>
 
-        <label for="lname"> Last name: </label>
+        <label for="lname">Last name:</label>
         <input type="text" id="lname" name="lname">
+        <!-- Error message span -->
         <span class="err" id="err-lname">Last name is required</span>
 
-
-        <label for="email"> Email: </label>
+        <label for="email">Email:</label>
         <input type="email" id="email" name="email"> 
-       </fieldset>
+      </fieldset>
 
-       <!-- Pickup or Delivery -->
-            <fieldset>
-                <legend>Select Pickup or Delivery</legend>
-                <label for="pickup">
-                    <input type="radio" id="pickup" name="method" value="pickup">
-                    Pickup
-                </label>
-                <label for="delivery">
-                    <input type="radio" id="delivery" name="method" value="delivery">
-                    Delivery
-                </label>
-            </fieldset>
+      <!-- Pickup or Delivery -->
+      <fieldset>
+        <legend>Select Pickup or Delivery</legend>
+        <!-- UPDATE: Added missing error span for method validation -->
+        <span class="err" id="err-method">Select pickup or delivery</span>
+
+        <label for="pickup">
+            <!-- 'name' attribute groups radio buttons together -->
+            <input type="radio" id="pickup" name="method" value="pickup">
+            Pickup
+        </label>
+        <label for="delivery">
+            <input type="radio" id="delivery" name="method" value="delivery">
+            Delivery
+        </label>
+      </fieldset>
     
+      <!-- Kept your custom toppings (Cheese, Pineapple) -->
       <fieldset>
         <legend>Select toppings</legend>
         <label for="pepperoni">
-          <input type="checkbox" id="pepperoni"
-                  name="toppings[]" value="pepperoni">
-                  Pepperoni
+          <!-- 'toppings[]' with brackets tells the server this is an array of items -->
+          <input type="checkbox" id="pepperoni" name="toppings[]" value="pepperoni">
+          Pepperoni
         </label>
         <label for="cheese">
-          <input type="checkbox" id="cheese"
-                  name="toppings[]" value="cheese">
-                  Cheese
+          <input type="checkbox" id="cheese" name="toppings[]" value="cheese">
+          Cheese
         </label>
         <label for="Pineapple">
-          <input type="checkbox" id="Pineapple"
-                  name="toppings[]" value="Pineapple">
-                  Pineapple
+          <input type="checkbox" id="Pineapple" name="toppings[]" value="Pineapple">
+          Pineapple
         </label>
       </fieldset>
 
-      <!--Select pizza size-->
+      <!-- Select pizza size -->
       <fieldset>
         <legend>Pizza Size</legend>
+        <!-- UPDATE: Added missing error span for size validation -->
+        <span class="err" id="err-size">Select a size</span>
+
         <select id="size" name="size">
-          <option value="none"> --Select a size-- </option>
+          <option value="none">--Select a size--</option>
           <option value="small">small</option>
           <option value="medium">medium</option>
           <option value="large">large</option>
         </select>
-       </fieldset>
+      </fieldset>
 
+      <!-- Comment field -->
+      <label for="comment">Comments</label>
+      <!-- 'name' attribute is what the server reads (req.body.comment) -->
+      <textarea rows="5" id="comment" name="comment"></textarea>
 
-       <!--Comment field-->
-       <label for="--comment"> Comments</label>
-       <textarea rows="5" id="comment" name="comment"></textarea>
+      <!-- Submit button triggers the form action -->
+      <button type="submit" id="order-button">Place Order</button>        
 
-         <button type="submit" id="order-button"> Place Order </button>        
-
-      </form>
+    </form>
   </div>
-
 </body>
 </html>
