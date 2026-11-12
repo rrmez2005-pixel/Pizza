@@ -1,61 +1,114 @@
 // Import the express module
 import express from 'express';
 
-// Create an instance of an express application
+// Import mysql
+import mysql2 from 'mysql2';
+
+// Import .env
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Create a connection pool
+const pool = mysql2.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+}).promise();
+
+// Create an instance of an
+// express application
 const app = express();
 
-// Define a port number for our server to listen on
+// Define a port number for
+// our server to listen on
 const PORT = 3000;
 
-// Create an array to store all incoming orders in the server's memory
+// Create an array to store orders
 const orders = [];
 
-// Enable static file serving (allows the app to find your CSS, images, and JS)
+// Enable static file serving
 app.use(express.static('public'));
 
-// Add "middleware" to allow the app to parse form data from POST requests
-// This allows us to access the form inputs using req.body
+// Add "middleware" to allow the app to parse form data
+// Access form data through req.body
 app.use(express.urlencoded({ extended: true }));
 
-// Define a default home route ("/")
+// Set view engine to EJS
+app.set('view engine', 'ejs');
+
+// Create a route to test the database
+app.get('/db-test', async(req, res) => {
+    try {
+        const orders = await pool.query('SELECT * FROM orders');
+        res.send(orders[0]);
+    } catch(err) {
+        console.error('Database error: ', err);
+        res.status(500).send('Database error occurred.');
+    }
+});
+
+// Define a default route ("/")
 app.get('/', (req, res) => {
-  res.sendFile(`${import.meta.dirname}/views/home.html`);
+    //res.send('Welcome to Poppa\'s Pizza');
+    res.render('home');
 });
 
-// Route to display the contact view page
+// Add a contact route to display a contact view page
 app.get('/contact-us', (req, res) => {
-  res.sendFile(`${import.meta.dirname}/views/contact.html`);
+    res.render('contact');
 });
 
-// Route to display the menu page (your custom route)
-app.get('/menu', (req, res) => {
-  res.sendFile(`${import.meta.dirname}/views/menu.html`);
+/*
+// Add an order confirmation route
+app.get('/confirm-order', (req, res) => {
+    res.render('confirm');
+});
+*/
+
+// Add a route to process a pizza order
+app.post('/submit-order', async(req, res) => {
+
+    // Create a JSON object to store order data
+    const order = req.body;
+    console.log(order);
+
+    // Define an SQL query to INSERT new order
+    const sql = `INSERT INTO orders (fname, lname, email, size, method, toppings, comment) 
+    VALUES(?, ?, ?, ?, ?, ?, ?)`;
+
+    // Create an array of parameters from order data
+    const params = [
+        order.fname,
+        order.lname,
+        order.email,
+        order.size,
+        order.method,
+        order.toppings,
+        order.comment
+    ];
+
+    // Execute the query
+    const [result] = await pool.execute(sql, params);
+
+    // Display the confirmation page
+    res.render('confirm', { order });
 });
 
-// Route to process a pizza order when the user submits the form
-app.post('/submit-order', (req, res) => {
-  // req.body contains a JSON object of all the form inputs
-  const order = req.body;
-  
-  // Add a timestamp so we know exactly when the order was placed
-  order.timestamp = new Date();
-
-  // Log the order to the terminal to verify it works
-  console.log("New Order Received:", order);
-
-  // Add the new order object to our orders array
-  orders.push(order);
-
-  // Redirect or display the confirmation page to the user
-  res.sendFile(`${import.meta.dirname}/views/confirm-order.html`);
-});
-
-// Admin route to view all submitted orders in raw JSON format
-app.get('/admin', (req, res) => {
-    res.send(orders);
+// Add an admin route
+app.get('/admin', async(req, res) => {
+    try {
+        const orders = await pool.query('SELECT * FROM orders');
+        console.log(orders[0]);
+        res.render('admin', { orders:orders[0] });
+    } catch(err) {
+        console.error('Database error: ', err);
+        res.status(500).send('Database error occurred.');
+    }
 });
 
 // Start the server on the designated port
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+    console.log(`Server is running at http://localhost:${PORT}`);
 });
