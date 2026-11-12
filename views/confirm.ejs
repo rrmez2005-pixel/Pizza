@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirm</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
 </head>
 <body>
-  <h1>Confirmed order</h1>
-
-  <h2> Order Summary</h2>
-  <p> Name: <%= order.fname %> <%= order.lname %> </p>
-  <p> Email: <%= order.email %></p>
-  <p> Pickup or delievery:<%= order.method %></p>
-  <p> Toppings:<%= order.toppings %></p>
-  <p> Toppings:<%= order.toppings %></p>
-  <p> Size:<%= order.size %></p>
-  <p> comments:<%= order.comment %></p>
-  <p> Times:<%= order.timestamp.toLocaleString() %></p>
+    <h1>Thank you for your order, <%= order.fname %>!</h1>
+    
+    <h2>Order Summary</h2>
+    <p>Order ID: <%= order.id %></p>
+    <p>Name: <%= order.fname %> <%= order.lname %></p>
+    <p>Email: <%= order.email %></p>
+    <p>Pickup or Delivery: <%= order.method %></p>
+    <p>Toppings: <%= order.toppings %></p>
+    <p>Size: <%= order.size %></p>
+    <p>Comment: <%= order.comment %></p>
+    <p>Date and Time: <%= order.timestamp %></p>
 </body>
 </html>
