@@ -46,7 +46,7 @@ body {
 }
 
 /* Styles multiple input types together */
-input[type=text], input[type="email"], select, textarea {
+input[type=text], input[type="email"], input[type="password"], select, textarea {
   width: 100%;
   border: 1px solid darkgreen;
   border-radius: .25em;
@@ -84,4 +84,9 @@ textarea {
   display: none; /* Hidden by default until JavaScript shows it */
   margin-top: -0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.login-error {
+  color: darkred;
+  font-weight: bold;
 }

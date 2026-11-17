@@ -1,12 +1,14 @@
-// Import the express module
-import express from 'express';
+    // Import the express module
+    import express from 'express';
 
-// Import mysql
-import mysql2 from 'mysql2';
+    // Import mysql
+    import mysql2 from 'mysql2';
 
-// Import .env
-import dotenv from 'dotenv';
-dotenv.config();
+    // Import .env
+    import dotenv from 'dotenv';
+    dotenv.config();
+
+    import session from 'express-session';
 
 // Create a connection pool
 const pool = mysql2.createPool({
@@ -52,6 +54,21 @@ app.get('/db-test', async(req, res) => {
 });
 */
 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {   maxAge: 1000 * 60 * 60    }
+}))
+
+function requireLogin(req, res, next) {
+    if (req.session. loggedIn) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
 // Define a default route ("/")
 app.get('/', (req, res) => {
     //res.send('Welcome to Poppa\'s Pizza');
@@ -61,6 +78,32 @@ app.get('/', (req, res) => {
 // Add a contact route to display a contact view page
 app.get('/contact-us', (req, res) => {
     res.render('contact');
+});
+
+app.post('/login', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    if (username === process.env.ADMIN_USER &&
+        password === process.env.ADMIN_PASSWORD) {
+
+            req.session.loggedIn = true;
+
+            res.redirect('/admin');
+        } else {
+            res.render('login', {error: 'Invalid username or password'});
+        }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/login');
+    });
+});
+
+// Add a contact route to display a contact view page
+app.get('/login', (req, res) => {
+    res.render('login', {   error: null  });
 });
 
 // Add a route to process a pizza order
@@ -103,7 +146,7 @@ app.post('/submit-order', async(req, res) => {
 });
 
 // Add an admin route
-app.get('/admin', async(req, res) => {
+app.get('/admin', requireLogin, async(req, res) => {
     try {
         
         // Array destructuring gives us just the data from the query
